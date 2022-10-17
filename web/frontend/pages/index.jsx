@@ -5,6 +5,7 @@ import {
   Layout,
   Page,
   SkeletonBodyText,
+  Button,
 } from "@shopify/polaris";
 import { QRCodeIndex } from "../components";
 import { useAppQuery } from "../hooks";
@@ -37,6 +38,10 @@ export default function HomePage() {
   const qrCodesMarkup = QRCodes?.length ? (
     <QRCodeIndex QRCodes={QRCodes} loading={isRefetching} />
   ) : null;
+
+  const clickAction = () => {
+    console.log("Click Action");
+  }
 
   /* loadingMarkup uses the loading component from AppBridge and components from Polaris  */
   const loadingMarkup = isLoading ? (
@@ -79,7 +84,10 @@ export default function HomePage() {
         }}
       />
       <Layout>
-        <Layout.Section>
+        <Layout.Section>          
+          <Button primary onClick={clickAction}>console</Button>
+        </Layout.Section> 
+        <Layout.Section>          
           {loadingMarkup}
           {qrCodesMarkup}
           {emptyStateMarkup}
