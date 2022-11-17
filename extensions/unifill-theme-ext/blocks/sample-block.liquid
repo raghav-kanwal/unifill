@@ -1,0 +1,85 @@
+{%- if block.settings.custom_css -%}
+  <style>
+  {{block.settings.custom_css}}
+  </style>
+{%- endif-%}
+{%- if block.settings.button_label -%}
+    <button id="unifill-checkout" class=
+      {%- if block.settings.full_width -%}
+        "button button--full-width"
+        {%- else -%}
+        "button"
+      {%- endif -%}
+    >{{block.settings.button_label}}</button>
+{%- endif -%}
+
+<script type="text/javascript" defer>
+  window.Unifill = {};
+  window.Unifill.client = btoa("{{block.settings.unifill_key}}");
+  console.log(">> key", window.Unifill.client);
+</script>
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+
+  <div class="modal-content">
+
+    <div><ul id="address_list"></ul></div>
+    <span class="close">&times;</span>
+
+      <div class="contact-form form-vertical">
+        <label for="mobile-number">Mobile Number</label>
+        <input id="mobile-number" type="text">
+      </div>
+      
+      <div class="otp-container">
+        <label for="otp-input">OTP</label>
+        <input type="text" id="otp-input">
+      </div>
+
+      <div class="submit-mobile-container">
+        <button type="submit" id="submit-mobile">Submit Mobile</button>&nbsp;
+        <button type="submit" id="submit-otp">Submit OTP</button>&nbsp;
+        <button type="submit" id="checkout">Checkout with Cart</button>
+      </div>
+
+  </div>
+
+</div>
+
+{% schema %}
+ {
+   "name": "My App Block",
+   "target": "section",
+   "stylesheet": "my-app-block.css",
+   "javascript": "my-app-block.js",
+   "templates": ["product", "index", "cart"],
+   "settings": [
+     {
+        "type": "text",
+        "id":"button_label",
+        "label": "Button text",
+        "default": "Checkout" 
+     },
+     {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "default":"//Custom CSS comes here"
+     },
+     {
+      	"type": "checkbox",
+        "id": "full_width",
+        "label": "Full width",
+        "default": true
+     },
+     {
+      "type":"text",
+      "id": "unifill_key",
+      "label": "Unifill Client key",
+      "default": "-"
+     }
+   ]
+ }
+{% endschema %}
