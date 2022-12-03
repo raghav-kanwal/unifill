@@ -3,7 +3,7 @@ unifillCheckout.addEventListener("click", (e) => {
     console.log("Clicked on the checkout button");
 })
 
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("TurboWindow");
 var btn = document.getElementById("unifill-checkout");
 var closeBtn = document.getElementsByClassName("close")[0];
 var submitMobile = document.getElementById("submit-mobile");
@@ -13,7 +13,30 @@ var otpInput = document.getElementById("otp-input");
 var checkoutBtn = document.getElementById("checkout");
 
 btn.onclick = function() {
+  pushCartDetails();
+  this.defaultZIndex = document.querySelector("#shopify-section-announcement-bar").style.zIndex;
+  document.querySelector("#shopify-section-announcement-bar").style.zIndex = 1;
+  document.querySelector("#shopify-section-header").style.zIndex = 1;
   modal.style.display = "block";
+}
+
+async function pushCartDetails() {
+  const turboPortal = document.querySelector("iframe[id='turbo-portal']");
+  window.addEventListener("message", function(message) {
+    if(!message.data.hasOwnProperty("type") || message.data.type?.indexOf("TURBO") === -1) return;
+    switch(message.data.type) {
+      case 'TURBO_EXIT': 
+      closeBtn.click();
+    }
+  });
+  
+  return await fetch(window.Shopify.routes.root + 'cart.js').then(response => response.json()).then(data => {
+    turboPortal.contentWindow.postMessage({
+      type: "TURBO_INIT",
+      cartPayload: data,
+      shopSource: window.Shopify.routes.root
+    }, '*');
+  });
 }
 
 async function fetchCart(mobileNumber) {

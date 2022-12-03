@@ -1,6 +1,10 @@
 {%- if block.settings.custom_css -%}
   <style>
-  {{block.settings.custom_css}}
+    {{block.settings.custom_css}}
+    .modal-right,
+    .modal-left {
+      width: 40rem%;
+    }
   </style>
 {%- endif-%}
 {%- if block.settings.button_label -%}
@@ -19,33 +23,33 @@
   console.log(">> key", window.Unifill.client);
 </script>
 
-<div id="myModal" class="modal">
+<div id="myModal" class="modal modal-{{block.settings.popup_aligment}}">
 
   <!-- Modal content -->
 
   <div class="modal-content">
-
-    <div><ul id="address_list"></ul></div>
     <span class="close">&times;</span>
+    <div class="barebones hidden">
+      <div><ul id="address_list"></ul></div>
+        <div class="contact-form form-vertical">
+          <label for="mobile-number">Mobile Number</label>
+          <input id="mobile-number" type="text">
+        </div>
+        
+        <div class="otp-container">
+          <label for="otp-input">OTP</label>
+          <input type="text" id="otp-input">
+        </div>
 
-      <div class="contact-form form-vertical">
-        <label for="mobile-number">Mobile Number</label>
-        <input id="mobile-number" type="text">
-      </div>
-      
-      <div class="otp-container">
-        <label for="otp-input">OTP</label>
-        <input type="text" id="otp-input">
-      </div>
-
-      <div class="submit-mobile-container">
-        <button type="submit" id="submit-mobile">Submit Mobile</button>&nbsp;
-        <button type="submit" id="submit-otp">Submit OTP</button>&nbsp;
-        <button type="submit" id="checkout">Checkout with Cart</button>
-      </div>
-
+        <div class="submit-mobile-container">
+          <button type="submit" id="submit-mobile">Submit Mobile</button>&nbsp;
+          <button type="submit" id="submit-otp">Submit OTP</button>&nbsp;
+          <button type="submit" id="checkout">Checkout with Cart</button>
+        </div>
+    </div>
+    <iframe id="turbo-portal" src="https://raghavkanwal-s3-bucket.s3.ap-south-1.amazonaws.com/profile.html">
+    <!-- <iframe id="turbo-portal" src="http://localhost:3000/profile"></iframe> -->
   </div>
-
 </div>
 
 {% schema %}
@@ -79,7 +83,37 @@
       "id": "unifill_key",
       "label": "Unifill Client key",
       "default": "-"
-     }
+     },
+     {
+      "type": "range",
+      "id": "background_blur",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Background Blur",
+      "default": 0
+    },
+     {
+      "type": "radio",
+      "id": "popup_aligment",
+      "label": "Popup Position",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "centered",
+          "label": "Centered"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        }
+      ],
+      "default": "centered"
+      }
    ]
  }
 {% endschema %}
