@@ -68,6 +68,13 @@
     left: 0;
   }
 }
+
+@media all and (min-width: 768px) {
+  .close {
+    display:none;
+  }
+}
+
 .modal-footer {
   display:flex;
   flex-direction: row;
@@ -115,6 +122,8 @@
   padding: 0 10px;
   line-height: 1.4;
 }
+
+
 
 .close:hover,
 .close:focus {
